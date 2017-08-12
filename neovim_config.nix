@@ -1,4 +1,9 @@
 { pkgs, ... }:
+
+let
+  plugins = pkgs.callPackage ./plugins.nix {};
+in
+
 {
   vimAlias = false;
   configure = {
@@ -46,7 +51,7 @@
 
     '';
 
-    vam.knownPlugins = pkgs.vimPlugins;
+    vam.knownPlugins = pkgs.vimPlugins // plugins;
     vam.pluginDictionaries = [
       { names = [
         "Hoogle"
@@ -57,6 +62,7 @@
         "ghcmod"
         "surround"
         "vim-gitgutter"
+        "vim-nix"
         ];
       }
     ];
