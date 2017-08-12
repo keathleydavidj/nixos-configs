@@ -35,7 +35,7 @@
     
     URxvt.colorUrl:          #AED210
     
-    Xft*dpi:                 128
+    Xft*dpi:                 100
     Xft*antialias:           true
     Xft*hinting:             full
     

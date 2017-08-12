@@ -1,3 +1,4 @@
+{ pkgs, ... }:
 {
   vimAlias = false;
   configure = {
@@ -41,10 +42,11 @@
         tnoremap <C-l> <C-\><C-n><C-w>l
         autocmd BufWinEnter,WinEnter term://* startinsert
         autocmd BufLeave term://* stopinsert
-  endif
+      endif
 
     '';
 
+    vam.knownPlugins = pkgs.vimPlugins;
     vam.pluginDictionaries = [
       { names = [
         "Hoogle"

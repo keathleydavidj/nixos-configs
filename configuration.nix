@@ -4,7 +4,7 @@ let
 
   urxvtConfig = import ./urxvt_config.nix pkgs;
 
-  nvimConfig = import ./neovim_config.nix;
+  nvimConfig = import ./neovim_config.nix pkgs;
 
 in
 {
