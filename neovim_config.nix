@@ -2,11 +2,11 @@
   vimAlias = false;
   configure = {
     customRC = ''
-      let mapleader = "\<Space>"
+      let mapleader="\<Space>"
       
       set number
       
-      set history = 5000
+      set history=5000
       set noswapfile
 
       set equalalways

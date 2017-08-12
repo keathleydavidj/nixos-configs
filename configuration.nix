@@ -1,5 +1,12 @@
 { config, pkgs, ... }:
 
+let
+
+  urxvtConfig = import ./urxvt_config.nix pkgs;
+
+  nvimConfig = import ./neovim_config.nix;
+
+in
 {
   imports =
     [ # Include the results of the hardware scan.
@@ -25,7 +32,7 @@
     chromium.enableAdobeFlash = true;
     firefox.enableAdobeFlash = true;
     packageOverrides = pkgs: {
-      neovim = pkgs.neovim.override (import ./neovim_config.nix);
+      neovim = pkgs.neovim.override nvimConfig;
     };
   };
 
@@ -48,6 +55,7 @@
     neovim
     silver-searcher
     sudo
+    openssh
     transmission_gtk
     tree
     rxvt_unicode
@@ -85,60 +93,7 @@
 
       desktopManager.gnome3.enable = true;
       displayManager.gdm.enable = true;
-      displayManager.sessionCommands = ''
-        xrdb "${pkgs.writeText "xrdb.conf" ''
-          URxvt.font:              xft:Source Code Pro Light:size=12
-          URxvt.letterSpace:       0
-          
-          URxvt.background:        #121214
-          URxvt.foreground:        #FFFFFF
-          ! black
-          URxvt.color0:            #2E3436
-          URxvt.color8:            #555753
-          ! red
-          URxvt.color1:            #CC0000
-          URxvt.color9:            #EF2929
-          ! green
-          URxvt.color2:            #4E9A06
-          URxvt.color10:           #8AE234
-          ! yellow
-          URxvt.color3:            #C4A000
-          URxvt.color11:           #FCE94F
-          ! blue
-          URxvt.color4:            #3465A4
-          URxvt.color12:           #729FCF
-          ! magenta
-          URxvt.color5:            #75507B
-          URxvt.color13:           #AD7FA8
-          ! cyan
-          URxvt.color6:            #D3D7CF
-          URxvt.color14:           #34E2E2
-          ! white
-          URxvt.color7:            #D3D7CF
-          URxvt.color15:           #EEEEEC
-          
-          URxvt*saveLines:         32767
-          
-          URxvt.colorUrl:          #AED210
-          
-          Xft*dpi:                 128
-          Xft*antialias:           true
-          Xft*hinting:             full
-          
-          URxvt.scrollBar:         false
-          URxvt*scrollTtyKeypress: true
-          URxvt*scrollTtyOutput:   false
-          URxvt*scrollWithBuffer:  false
-          URxvt*scrollStyle:       plain
-          URxvt*secondaryScroll:   true
-          
-          Xft.autohint:            0
-          Xft.lcdFilter:           lcddefault
-          Xft.hintstyle:           hintfull
-          Xft.hinting:             1
-          Xft.antialias:           1
-        '' }"
-      '';
+      displayManager.sessionCommands = urxvtConfig; 
       
     };
   };
