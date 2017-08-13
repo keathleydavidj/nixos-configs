@@ -13,16 +13,34 @@ in
     vam.knownPlugins = pkgs.vimPlugins // plugins;
     vam.pluginDictionaries = [
       { names = [
-        "Hoogle"
+        "commentary"
+        "gruvbox"
         "Solarized"
         "Syntastic"
-        # "UltiSnips"
-        "commentary"
-        "ghcmod"
         "surround"
+        "The_NERD_tree"
+        "vim-airline"
         "vim-gitgutter"
-        "vim-nix"
+        "vim-polyglot"
         ];
+      }
+
+      {
+        name = "elm-vim";
+        ft_regex = "^\.elm$"
+      }
+
+      { 
+        names = [
+          "ghcmod"
+          "Hoogle"
+        ];
+        ft_regex = "^\.hs$";
+      }
+
+      {
+        name = "vim-nix";
+        ft_regex = "^\.nix$";
       }
     ];
   };
