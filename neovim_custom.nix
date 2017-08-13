@@ -16,19 +16,16 @@ in
         "airline"
         "ale"
         "commentary"
+        "elm-vim"
         "gitgutter"
         "gruvbox"
         "nerdtree"
         "surround"
         "tmux-navigator"
         "polyglot"
+        "vim-nix"
         "vim-orgmode"
         ];
-      }
-
-      {
-        name = "elm-vim";
-        ft_regex = "^\.elm$";
       }
 
       { 
@@ -38,11 +35,6 @@ in
           "hoogle"
         ];
         ft_regex = "^\.hs$";
-      }
-
-      {
-        name = "vim-nix";
-        ft_regex = "^\.nix$";
       }
     ];
   };

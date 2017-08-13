@@ -99,7 +99,10 @@ in
   };
 
   programs = {
+    # bring in adb / fastboot for android debugging
     adb.enable = true;
+
+
 
     tmux = {
       enable = true;
@@ -122,14 +125,20 @@ in
   
   # users.mutableUsers = false;
 
-  users.defaultUserShell = pkgs.zsh;
-  users.extraUsers.endertux = {
-    createHome = true;
-    home = "/home/endertux";
-    description = "David Keathley";
-    extraGroups =  [ "adbusers" "wheel" ];
-    isSystemUser = false;
-    useDefaultShell = true;
+  users = {
+    defaultUserShell = "${pkgs.zsh}/bin/zsh";
+    extraUsers = [
+    { description = "David Keathley";
+      name = "endertux";
+      group = "users";
+      uid = 1000;
+      createHome = true;
+      home = "/home/endertux";
+      password = "dummy"; # first boot only
+      extraGroups =  [ "adbusers" "wheel" ];
+      isSystemUser = false;
+      useDefaultShell = true; }
+    ];
   };
 
   security.sudo.enable = true;
