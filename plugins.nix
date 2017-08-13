@@ -15,5 +15,13 @@ in
     dependancies = [];
   };
 
-  # more?
+  "ale" = buildVimPlugin {
+    name = "ale";
+    src = fetchgit {
+      url = "https://github.com/w0rp/ale";
+      rev = "79701f6f200489d0eef2ea6e91f7e46be012cdd3";
+      sha256 = "1yfzy5jrbpa2cfzby7qslrlfpz3c6xh6qnhm3hbhjsjfs5brl4id";
+    };
+    dependencies = [];
+  };
 }

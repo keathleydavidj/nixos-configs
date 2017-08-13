@@ -19,8 +19,6 @@ in
         "gitgutter"
         "gruvbox"
         "nerdtree"
-        "Solarized"
-        "syntastic"
         "surround"
         "tmux-navigator"
         "polyglot"
@@ -30,7 +28,7 @@ in
 
       {
         name = "elm-vim";
-        ft_regex = "^\.elm$"
+        ft_regex = "^\.elm$";
       }
 
       { 

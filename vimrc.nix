@@ -1,17 +1,15 @@
 { stdenv, writeText }:
 
 let
-    vimrc       = builtins.readFile ./vimrc/vimrc.vim;
+  vimrc       = builtins.readFile ./vimrc/vimrc.vim;
 
-    elm-vim     = builtins.readFile ./vimrc/elm-vim.vim;
+  elm-vim     = builtins.readFile ./vimrc/elm-vim.vim;
     
-    syntastic.vim;
-
-    nerdtree    = builtins.readFile ./vimrc/nerdtree.vim;
+  nerdtree    = builtins.readFile ./vimrc/nerdtree.vim;
     
-    gruvbox     = builtins.readFile ./vimrc/gruvbox.vim;
+  gruvbox     = builtins.readFile ./vimrc/gruvbox.vim;
     
-    vim-airline = builtins.readFile ./vimre/vim-airline.vim;
+  vim-airline = builtins.readFile ./vimrc/vim-airline.vim;
 
 in
 
@@ -19,8 +17,6 @@ in
     ${vimrc}
     
     ${vim-airline}
-
-    ${syntastic}
 
     ${nerdtree}
 
