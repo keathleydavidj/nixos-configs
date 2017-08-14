@@ -41,6 +41,7 @@ in
     nix-repl
 
     chromium
+    elmPackages.elm
     exfat
     firefox
     git
