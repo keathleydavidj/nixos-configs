@@ -3,6 +3,8 @@
 let
   vimrc       = builtins.readFile ./vimrc/vimrc.vim;
 
+  ale         = builtins.readFile ./vimrc/ale.vim;
+
   elm-vim     = builtins.readFile ./vimrc/elm-vim.vim;
     
   nerdtree    = builtins.readFile ./vimrc/nerdtree.vim;
@@ -23,4 +25,6 @@ in
     ${gruvbox}
 
     ${elm-vim}
+
+    ${ale}
 ''

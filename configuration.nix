@@ -6,6 +6,7 @@ let
 
   nvimConfig = import ./neovim_custom.nix pkgs;
 
+  zshrc = import ./zshrc.nix pkgs;
 in
 {
   imports =
@@ -64,8 +65,6 @@ in
     wget
     xclip
     xfontsel
-    zsh
-    zsh-syntax-highlighting
   ];
 
   services = {
@@ -115,6 +114,11 @@ in
     zsh = {
       enable = true;
       syntaxHighlighting.enable = true;
+      interactiveShellInit = ''
+        cat << EOF > $HOME/.zshrc
+          ${zshrc}
+        EOF
+      '';
       shellAliases = {
 	      c = "clear";
         l = "ls -alh";
