@@ -27,6 +27,11 @@ in
   };
 
   time.timeZone = "America/Chicago";
+
+  # /etc/nixos/configuration.nix
+  # Put nixos-unstable at the front of nixPath
+  # nix.nixPath = pkgs.lib.mkBefore [ "nix/var/nix/profiles/per-user/root/channels/nixos-unstable" ]; 
+  # TODO why is this failing?
   
   nixpkgs.config = {
     allowUnfree = true;
@@ -41,6 +46,7 @@ in
     nix
     nix-repl
 
+    atom
     chromium
     elmPackages.elm
     exfat
@@ -58,8 +64,8 @@ in
     silver-searcher
     sudo
     openssh
+    tig
     transmission_gtk
-    tree
     rxvt_unicode
     vlc
     wget
@@ -151,10 +157,10 @@ in
 
   system = {
     # The NixOS release to be compatible with for stateful data such as databases.
-    stateVersion = "17.03";
+    stateVersion = "nixos-unstable";
     autoUpgrade = {
       enable = true;
-      channel = https://nixos.org/channels/nixos-17.03;
+      channel = https://nixos.org/channels/nixos-unstable;
     };
   };
 
