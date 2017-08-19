@@ -30,7 +30,7 @@ in
 
   # /etc/nixos/configuration.nix
   # Put nixos-unstable at the front of nixPath
-  # nix.nixPath = pkgs.lib.mkBefore [ "nix/var/nix/profiles/per-user/root/channels/nixos-unstable" ]; 
+  nix.nixPath = pkgs.lib.mkBefore [ "/nix/var/nix/profiles/per-user/root/channels/nixos-unstable" ]; 
   # TODO why is this failing?
   
   nixpkgs.config = {
