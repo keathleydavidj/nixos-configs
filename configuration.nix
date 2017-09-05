@@ -30,8 +30,25 @@ in
 
   # /etc/nixos/configuration.nix
   # Put nixos-unstable at the front of nixPath
-  nix.nixPath = pkgs.lib.mkBefore [ "/nix/var/nix/profiles/per-user/root/channels/nixos-unstable" ]; 
+  # nix.nixPath = pkgs.lib.mkBefore [ "/nix/var/nix/profiles/per-user/root/channels/nixos-unstable" ]; 
   # TODO why is this failing?
+
+  fonts = {
+    fonts = with pkgs; [
+      dejavu_fonts
+      source-code-pro
+      source-sans-pro
+      source-serif-pro
+    ];
+    fontconfig = {
+      penultimate.enable = false;
+      defaultFonts = {
+        monospace = [ "Source Code Pro" ];
+        sansSerif = [ "Source Sans Pro" ];
+        serif     = [ "Source Serif Pro" ];
+      };
+    };
+  };
   
   nixpkgs.config = {
     allowUnfree = true;
@@ -54,6 +71,7 @@ in
     git
     gnome3.gnome-tweak-tool
     gnome3.gdm
+    google-play-music-desktop-player
     htop
     iptables
     ldm
@@ -157,10 +175,10 @@ in
 
   system = {
     # The NixOS release to be compatible with for stateful data such as databases.
-    stateVersion = "nixos-unstable";
+    stateVersion = "17.03";
     autoUpgrade = {
       enable = true;
-      channel = https://nixos.org/channels/nixos-unstable;
+      channel = https://nixos.org/channels/nixos-17.03;
     };
   };
 
