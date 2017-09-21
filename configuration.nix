@@ -96,14 +96,6 @@ in
     printing.enable = true;
     nixosManual.showManual = true;
 
-    redshift = {
-      enable = true;
-      latitude = "30";
-      longitude = "-97";
-      temperature.day = 5600;
-      temperature.night = 2700;
-    };
-
     gnome3 = {
       tracker.enable = false;
       gnome-keyring.enable = true;
@@ -112,13 +104,24 @@ in
     xserver = {
       enable = true;
       layout = "us";
-      xkbOptions = "ctrl:nocaps";
-      xkbVariant = "colemak";
 
       desktopManager.gnome3.enable = true;
       displayManager.gdm.enable = true;
       displayManager.sessionCommands = urxvtConfig; 
-      
+    };
+
+    redshift = {
+      enable = true;
+      latitude = "30";
+      longitude = "-97";
+      temperature.day = 5600;
+      temperature.night = 2700;
+    };
+
+    mysql = {
+      enable = true;
+      dataDir = "/var/db/mysql";
+      package = pkgs.mysql;
     };
   };
 
