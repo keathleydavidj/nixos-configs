@@ -82,4 +82,7 @@
   export PAGER='${pkgs.less}/bin/less -R'
   export KEYTIMEOUT=1
 
+  PATH='$PATH:$HOME/.yarn/bin'
+  PATH='$PATH:$HOME/.config/yarn/global/node_modules/elm/Elm-Platform/0.18/.cabal-sandbox/bin'
+
 ''
