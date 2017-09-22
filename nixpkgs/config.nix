@@ -8,6 +8,7 @@
     shell-env = pkgs.buildEnv {
       name = "shell-env";
       paths = [
+        exfat
         git
         htop
         nix
@@ -24,7 +25,7 @@
     };
     desktop-env = {
       name = "desktop-env";
-      paths = [
+      paths = with pkgs; [
         atom-beta
         chromium
         firefox

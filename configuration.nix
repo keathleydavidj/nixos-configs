@@ -11,13 +11,9 @@
     efi.canTouchEfiVariables = true;
   };
 
-  hardware = {
-    pulseaudio.enable = true;
-  };
-
   networking = {
     hostName = "nixos-intel";
-    networkmanager = true;
+    networkmanager.enable = true;
   };
 
   i18n = {
@@ -27,11 +23,6 @@
   };
 
   time.timeZone = "America/Chicago";
-
-  # /etc/nixos/configuration.nix
-  # Put nixos-unstable at the front of nixPath
-  # nix.nixPath = pkgs.lib.mkBefore [ "/nix/var/nix/profiles/per-user/root/channels/nixos-unstable" ];
-  # TODO why is this failing?
 
   fonts = {
     fonts = with pkgs; [
@@ -52,15 +43,9 @@
 
   environment = {
     systemPackages = with pkgs; [
-      nix
-
-      exfat
       iptables
-      ldm
       lm_sensors
       manpages
-      sudo
-      openssh
     ];
   };
 
