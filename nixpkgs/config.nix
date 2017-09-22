@@ -8,7 +8,31 @@
     shell-env = pkgs.buildEnv {
       name = "shell-env";
       paths = [
-        tmux 
+        git
+        htop
+        nix
+        nix-repl
+        nodejs
+        vim_configurable
+        silver-searcher
+        sudo
+        openssh
+        tig
+        tmux
+        wget
+      ];
+    };
+    desktop-env = {
+      name = "desktop-env";
+      paths = [
+        atom-beta
+        chromium
+        firefox
+        gnome3.gnome-tweak-tool
+        google-play-music-desktop-player
+        transmission_gtk
+        rxvt_unicode
+        vlc
       ];
     };
   };
