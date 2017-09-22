@@ -1,36 +1,36 @@
 { config, pkgs, ... }:
 
-let
-
-  urxvtConfig = import ./urxvt_config.nix pkgs;
-
-  nvimConfig = import ./neovim_custom.nix pkgs;
-
-  zshrc = import ./zshrc.nix pkgs;
-in
 {
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
     ];
 
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
+  boot.loader = {
+    systemd-boot.enable = true;
+    efi.canTouchEfiVariables = true;
+  };
 
-  hardware.pulseaudio.enable = true;
+  hardware = {
+    pulseaudio.enable = true;
+  };
 
-  networking.hostName = "nixos-intel";
+  networking = {
+    hostName = "nixos-intel";
+    networkmanager = true;
+  };
 
   i18n = {
+    consoleFont = "Lat2-Terminus16";
+    consoleKeyMap = "us";
     defaultLocale = "en_US.UTF-8";
-    consoleUseXkbConfig = true;
   };
 
   time.timeZone = "America/Chicago";
 
   # /etc/nixos/configuration.nix
   # Put nixos-unstable at the front of nixPath
-  # nix.nixPath = pkgs.lib.mkBefore [ "/nix/var/nix/profiles/per-user/root/channels/nixos-unstable" ]; 
+  # nix.nixPath = pkgs.lib.mkBefore [ "/nix/var/nix/profiles/per-user/root/channels/nixos-unstable" ];
   # TODO why is this failing?
 
   fonts = {
@@ -49,135 +49,71 @@ in
       };
     };
   };
-  
-  nixpkgs.config = {
-    allowUnfree = true;
-    chromium.enableAdobeFlash = true;
-    firefox.enableAdobeFlash = true;
-    packageOverrides = pkgs: {
-      neovim = pkgs.neovim.override nvimConfig;
-    };
+
+  environment = {
+    systemPackages = with pkgs; [
+      nix
+
+      exfat
+      iptables
+      ldm
+      lm_sensors
+      manpages
+      sudo
+      openssh
+    ];
   };
 
-  environment.systemPackages = with pkgs; [
-    nix
-    nix-repl
-
-    atom
-    chromium
-    elmPackages.elm
-    exfat
-    firefox
-    git
-    gnome3.gnome-tweak-tool
-    gnome3.gdm
-    google-play-music-desktop-player
-    htop
-    iptables
-    ldm
-    lm_sensors
-    manpages
-    nodejs
-    neovim
-    silver-searcher
-    sudo
-    openssh
-    tig
-    transmission_gtk
-    rxvt_unicode
-    vlc
-    wget
-    xclip
-    xfontsel
-  ];
-
   services = {
-    ntp.enable = true;
-    printing.enable = true;
-    nixosManual.showManual = true;
-
+    xserver = {
+      enable = true;
+      layout = "us";
+      desktopManager = {
+        gnome3.enable = true;
+        default = "gnome3";
+      };
+    };
     gnome3 = {
       tracker.enable = false;
       gnome-keyring.enable = true;
     };
-  
-    xserver = {
-      enable = true;
-      layout = "us";
-
-      desktopManager.gnome3.enable = true;
-      displayManager.gdm.enable = true;
-      displayManager.sessionCommands = urxvtConfig; 
-    };
-
     redshift = {
       enable = true;
-      latitude = "30";
-      longitude = "-97";
-      temperature.day = 5600;
-      temperature.night = 2700;
+      # Austin
+      latitude = "30.274591";
+      longitude = "-97.740375";
     };
-
-    mysql = {
+    postgresql = {
       enable = true;
-      dataDir = "/var/db/mysql";
-      package = pkgs.mysql;
+      package = pkgs.postgresql;
     };
+    nixosManual.showManual = true;
   };
 
   programs = {
-    # bring in adb / fastboot for android debugging
     adb.enable = true;
-
-
-
-    tmux = {
-      enable = true;
-      terminal = "screen-256color";
-      keyMode = "vi";
-      escapeTime = 0;
-    };
-
-    zsh = {
-      enable = true;
-      syntaxHighlighting.enable = true;
-      interactiveShellInit = ''
-        cat << EOF > $HOME/.zshrc
-          ${zshrc}
-        EOF
-      '';
-      shellAliases = {
-	      c = "clear";
-        l = "ls -alh";
-        ll = "ls -l";
-        ls = "ls --color=tty";
-      };
+    bash = {
+      enableCompletion = true;
     };
   };
-  
-  # users.mutableUsers = false;
 
   users = {
-    defaultUserShell = "${pkgs.zsh}/bin/zsh";
-    extraUsers = [
-    { description = "David Keathley";
-      name = "endertux";
+    extraUsers.endertux = {
       group = "users";
-      uid = 1000;
-      createHome = true;
+      extraGroups =  [
+        "adbusers"
+        "networkmanager"
+        "wheel"
+      ];
       home = "/home/endertux";
+      createHome = true;
+      useDefaultShell = true;
       password = "dummy"; # first boot only
-      extraGroups =  [ "adbusers" "wheel" ];
-      isSystemUser = false;
-      useDefaultShell = true; }
-    ];
+      uid = 1000;
+    };
   };
 
-  security.sudo.enable = true;
-
-
   system = {
-    # The NixOS release to be compatible with for stateful data such as databases.
     stateVersion = "17.03";
     autoUpgrade = {
       enable = true;
