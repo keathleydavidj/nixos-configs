@@ -1,14 +1,22 @@
-{ pkgs }:
 {
-  allowBroken = true;
   allowUnfree = true;
   chromium.enableAdobeFlash = true;
   firefox.enableAdobeFlash = true;
-  packageOverrides = super: let pkgs = super.pkgs; in with pkgs; rec {
-    shell-env = pkgs.buildEnv {
-      name = "shell-env";
+  pulseaudio = true;
+  packageOverrides = pkgs:
+  let
+    tor-browser = pkgs.tor-browser-bundle-bin.override {
+      extraPrefs = ''
+        lockPref("browser.tabs.remote.autostart", false);
+        lockPref("browser.tabs.remote.autostart.2", false);
+      '';
+    };
+  in
+  rec {
+    userspace = with pkgs; buildEnv {
+      name = "userspace";
       paths = [
-        exfat
+        curl
         git
         htop
         nix
@@ -20,17 +28,19 @@
         openssh
         tig
         tmux
-        wget
       ];
     };
-    desktop-env = {
+
+    desktop-env = with pkgs; buildEnv {
       name = "desktop-env";
-      paths = with pkgs; [
+      paths = [
         atom-beta
         chromium
         firefox
         gnome3.gnome-tweak-tool
         google-play-music-desktop-player
+        tor
+        tor-browser
         transmission_gtk
         rxvt_unicode
         vlc

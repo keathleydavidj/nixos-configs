@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, lib, pkgs, ... }:
 
 {
   imports =
@@ -41,6 +41,13 @@
     };
   };
 
+  nix = {
+    trustedBinaryCaches = [
+      "http://hydra.cryp.to"
+      "http://hydra.nixos.org"
+    ];
+  };
+
   environment = {
     systemPackages = with pkgs; [
       iptables
@@ -70,19 +77,29 @@
     };
     postgresql = {
       enable = true;
-      package = pkgs.postgresql;
+      package = pkgs.postgresql94;
+      authentication = lib.mkForce ''
+        # Generated file; do not edit!
+        # TYPE  DATABASE        USER            ADDRESS                 METHOD
+        local   all             all                                     trust
+        host    all             all             127.0.0.1/32            trust
+        host    all             all             ::1/128                 trust
+      '';
     };
     nixosManual.showManual = true;
   };
 
   programs = {
     adb.enable = true;
-    bash = {
+    zsh = {
+      enable = true;
       enableCompletion = true;
+      syntaxHighlighting.enable = true;
     };
   };
 
   users = {
+    defaultUserShell = pkgs.zsh;
     extraUsers.endertux = {
       group = "users";
       extraGroups =  [
@@ -99,10 +116,10 @@
   };
 
   system = {
-    stateVersion = "17.03";
+    stateVersion = "17.09";
     autoUpgrade = {
       enable = true;
-      channel = https://nixos.org/channels/nixos-17.03;
+      channel = https://nixos.org/channels/nixos-17.09;
     };
   };
 
