@@ -12,39 +12,39 @@
       '';
     };
   in
-  rec {
-    userspace = with pkgs; buildEnv {
-      name = "userspace";
-      paths = [
-        curl
-        git
-        htop
-        nix
-        nix-repl
-        nodejs
-        vim_configurable
-        silver-searcher
-        sudo
-        openssh
-        tig
-        tmux
-      ];
-    };
+    rec {
+      userspace = with pkgs; buildEnv {
+        name = "userspace";
+        paths = [
+          curl
+          git
+          htop
+          nix
+          nix-repl
+          nodejs
+          vim_configurable
+          silver-searcher
+          sudo
+          openssh
+          tig
+          tmux
+        ];
+      };
 
-    desktop-env = with pkgs; buildEnv {
-      name = "desktop-env";
-      paths = [
-        atom-beta
-        chromium
-        firefox
-        gnome3.gnome-tweak-tool
-        google-play-music-desktop-player
-        tor
-        tor-browser
-        transmission_gtk
-        rxvt_unicode
-        vlc
-      ];
+      desktop-env = with pkgs; buildEnv {
+        name = "desktop-env";
+        paths = [
+          atom-beta
+          chromium
+          firefox
+          gnome3.gnome-tweak-tool
+          google-play-music-desktop-player
+          tor
+          tor-browser
+          transmission_gtk
+          rxvt_unicode
+          vlc
+        ];
+      };
     };
-  };
 }

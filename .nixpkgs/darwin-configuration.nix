@@ -1,32 +1,28 @@
 { config, lib, pkgs, ... }:
 {
-
   time.timeZone = "America/Chicago";
 
-  # List packages installed in system profile. To search by name, run:
-  # $ nix-env -qaP | grep wget
   environment = {
     shellAliases = {
       c = "clear";
-      ts = "tig status"
+      ts = "tig status";
     };
     systemPackages = with pkgs; [ 
       curl
-      chunkwm
       fzf
       git
       htop
-      khd
-      nix-repl
+      # khd
+      nix
       silver-searcher
       tig
     ];
+    variables = {
+      FZF_DEFAULT_COMMAND = "ag -l -f -g ''";
+    };
   };
 
   programs = {
-    fish = {
-      enable = true;
-    };
     tmux = {
       enable = true;
       enableSensible = true;
@@ -36,8 +32,17 @@
       enable = true;
       enableSensible = true;
       plugins = [ 
-        { names = [ "ale" "vim-gitgutter" "commentary" ] }
-        { names = [ "fzfWrapper" "youcompleteme" "colors-colarized" ] }
+        { names = [ 
+            "ale" 
+            "colors-solarized" 
+            "commentary" 
+            "fzfWrapper" 
+            "vim-gitgutter"
+            "vim-indent-object"
+            "vim-nix" 
+            "youcompleteme"
+          ];
+        }
       ];
       vimConfig = ''
         colorscheme solarized
@@ -55,24 +60,41 @@
       enableFzfHistory = true;
       promptInit = ''
         autoload -U promptinit && promptinit
+
+        PROMPT='%B%(?..%? )%b⇒ '
+        RPROMPT='%F{green}%~%f'
       '';
+      variables = {
+        cfg = "$HOME/.nixpkgs/darwin-config.nix";
+        darwin = "$HOME/.nix-defexpr/darwin";
+        pkgs = "$HOME/.nix-defexpr/nixpkgs";
+      };
+    };
   };
 
   # Recreate /run/current-system symlink after boot.
   services = {
     activate-system.enable = true;
     postgresql.enable = true;
-    chunkwm = {
-      enable = true;
-      extraConfig = ''
-      chunkc tiling::rule --owner iTerm2 --state tile
-      '';
-    };
+    # chunkwm = {
+    #   enable = true;
+    #   package = pkgs.chunkwm;
+    #   extraConfig = ''
+    #   chunkc tiling::rule --owner iTerm2 --state tile
+    #   '';
+    # };
   };
 
   nix = {
     gc.automatic = true;
     maxJobs = 4;
+    nixPath = [ # Use local nixpkgs checkout instead of channels.
+      "darwin=$HOME/.nix-defexpr/darwin"
+      "nixpkgs=$HOME/.nix-defexpr/nixpkgs"
+      "darwin-config=$HOME/.nixpkgs/darwin-configuration.nix"
+      "/nix/var/nix/profiles/per-user/root/channels"
+      "$HOME/.nix-defexpr/channels"
+    ];
     useSandbox = true;
   }; 
 }
