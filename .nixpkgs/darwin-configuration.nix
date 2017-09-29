@@ -1,19 +1,78 @@
 { config, lib, pkgs, ... }:
 {
 
+  time.timeZone = "America/Chicago";
+
   # List packages installed in system profile. To search by name, run:
   # $ nix-env -qaP | grep wget
-  environment.systemPackages =
-    [ pkgs.nix-repl
+  environment = {
+    shellAliases = {
+      c = "clear";
+      ts = "tig status"
+    };
+    systemPackages = with pkgs; [ 
+      curl
+      chunkwm
+      fzf
+      git
+      htop
+      khd
+      nix-repl
+      silver-searcher
+      tig
     ];
+  };
 
-  # Create /etc/bashrc that loads the nix-darwin environment.
-  programs.bash.enable = true;
+  programs = {
+    fish = {
+      enable = true;
+    };
+    tmux = {
+      enable = true;
+      enableSensible = true;
+      enableVim = true;
+    };
+    vim = {
+      enable = true;
+      enableSensible = true;
+      plugins = [ 
+        { names = [ "ale" "vim-gitgutter" "commentary" ] }
+        { names = [ "fzfWrapper" "youcompleteme" "colors-colarized" ] }
+      ];
+      vimConfig = ''
+        colorscheme solarized
+        set bg=dark
+      
+        set clipboard=unnamed
+        set relativenumber
+      '';
+    };
+    zsh = {
+      enable = true;
+      enableBashCompletion = true;
+      enableFzfCompletion = true;
+      enableFzfGit = true;
+      enableFzfHistory = true;
+      promptInit = ''
+        autoload -U promptinit && promptinit
+      '';
+  };
 
   # Recreate /run/current-system symlink after boot.
-  services.activate-system.enable = true;
+  services = {
+    activate-system.enable = true;
+    postgresql.enable = true;
+    chunkwm = {
+      enable = true;
+      extraConfig = ''
+      chunkc tiling::rule --owner iTerm2 --state tile
+      '';
+    };
+  };
 
-  # You should generally set this to the total number of logical cores in your system.
-  # $ sysctl -n hw.ncpu
-  nix.maxJobs = 4;
+  nix = {
+    gc.automatic = true;
+    maxJobs = 4;
+    useSandbox = true;
+  }; 
 }
