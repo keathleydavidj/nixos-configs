@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ config, pkgs, ... }:
 
 {
   imports =
@@ -6,33 +6,77 @@
       ./hardware-configuration.nix
     ];
 
-  boot.loader = {
-    systemd-boot.enable = true;
+  boot.loader = { 
     efi.canTouchEfiVariables = true;
+    systemd-boot.enable = true;
   };
 
-  networking = {
-    hostName = "nixos-intel";
-    networkmanager.enable = true;
-  };
+  hardware.pulseaudio.enable = true;
+
+  networking.hostName = "ryzen-nixos";
 
   i18n = {
-    consoleFont = "Lat2-Terminus16";
+    consoleFont = "Source Code Pro"; 
+    # consoleFont = "Lat2-Terminus16";
     consoleKeyMap = "us";
     defaultLocale = "en_US.UTF-8";
   };
 
   time.timeZone = "America/Chicago";
 
+  environment = {
+    systemPackages = with pkgs; [
+      chromium
+      dmenu
+      git
+      google-play-music-desktop-player
+      ntfs3g
+      silver-searcher
+      transmission_gtk
+      rxvt_unicode
+      vlc
+    ];
+  };
+
+  services = {
+    nix-serve.enable = true;
+    nixosManual.showManual = true;
+    transmission.enable = true;
+    unifi.enable = true;
+    urxvtd = {
+      enable = true;
+    };
+    redshift = {
+      enable = true;
+      latitude = "30";
+      longitude = "-97";
+      temperature.day = 5600;
+      temperature.night = 2700;
+    };
+    xserver = {
+      enable = true;
+      autorun = true;
+      desktopManager = {
+        gnome3 = {
+          enable = true;
+        };
+      };
+      videoDrivers = [ "amdgpu-pro" ];
+    };
+  };
+
   fonts = {
     fonts = with pkgs; [
+      corefonts
       dejavu_fonts
+      google-fonts
+      powerline-fonts
       source-code-pro
-      source-sans-pro
-      source-serif-pro
+      terminus_font
+      ubuntu_font_family
     ];
+
     fontconfig = {
-      penultimate.enable = false;
       defaultFonts = {
         monospace = [ "Source Code Pro" ];
         sansSerif = [ "Source Sans Pro" ];
@@ -41,81 +85,44 @@
     };
   };
 
+  programs = {
+    fish.enable = true;
+  };
+  
+  users = {
+    defaultUserShell = pkgs.fish;
+    extraUsers.endertux = {
+      isNormalUser = true;
+      extraGroups =  [
+        "adbusers"
+        "networkmanager" 
+        "wheel" 
+      ];
+    };
+  };
+
   nix = {
+    autoOptimiseStore = true;
+    gc.automatic = true;
+    maxJobs = 16;
     trustedBinaryCaches = [
       "http://hydra.cryp.to"
       "http://hydra.nixos.org"
     ];
   };
 
-  environment = {
-    systemPackages = with pkgs; [
-      iptables
-      lm_sensors
-      manpages
-    ];
-  };
-
-  services = {
-    xserver = {
-      enable = true;
-      layout = "us";
-      desktopManager = {
-        gnome3.enable = true;
-        default = "gnome3";
-      };
-    };
-    gnome3 = {
-      tracker.enable = false;
-      gnome-keyring.enable = true;
-    };
-    redshift = {
-      enable = true;
-      # Austin
-      latitude = "30.274591";
-      longitude = "-97.740375";
-    };
-    postgresql = {
-      enable = true;
-      package = pkgs.postgresql94;
-      authentication = lib.mkForce ''
-        # Generated file; do not edit!
-        # TYPE  DATABASE        USER            ADDRESS                 METHOD
-        local   all             all                                     trust
-        host    all             all             127.0.0.1/32            trust
-        host    all             all             ::1/128                 trust
-      '';
-    };
-    nixosManual.showManual = true;
-  };
-
-  programs = {
-    adb.enable = true;
-    zsh = {
-      enable = true;
-      enableCompletion = true;
-      syntaxHighlighting.enable = true;
-    };
-  };
-
-  users = {
-    defaultUserShell = pkgs.zsh;
-    extraUsers.endertux = {
-      group = "users";
-      extraGroups =  [
-        "adbusers"
-        "networkmanager"
-        "wheel"
-      ];
-      home = "/home/endertux";
-      createHome = true;
-      useDefaultShell = true;
-      password = "dummy"; # first boot only
-      uid = 1000;
-    };
-  };
+  nixpkgs.config.allowUnfree = true;
 
   system = {
+    activationScripts = {
+      config-files = {
+        text = ''
+          ln -sfn /home/endertux/nixos-configs/nixos/* /etc/nixos
+          ln -sfn /home/endertux/nixos-configs/.nixpkgs/* /home/endertux/.nixpkgs
+        '';
+        deps = [];
+      };
+    };
     stateVersion = "17.09";
     autoUpgrade = {
       enable = true;
