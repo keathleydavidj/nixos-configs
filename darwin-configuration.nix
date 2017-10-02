@@ -1,19 +1,33 @@
-{ config, lib, pkgs, ... }:
+{ config, pkgs, ... }:
+
 {
   time.timeZone = "America/Chicago";
 
+  nixpkgs.config = {
+    allowUnfree = true;
+    allowUnfreeRedistributable = true;
+    packageOverrides = pkgs: rec {
+      chunkwm = pkgs.callPackage ./chunkwm/default.nix {
+        inherit (pkgs.darwin.apple_sdk.frameworks) Carbon Cocoa ApplicationServices;
+      };
+    };
+  };
   environment = {
     shellAliases = {
       c = "clear";
       ts = "tig status";
     };
     systemPackages = with pkgs; [
+      chunkwm
       fzf
       git
       htop
+      khd
       nix
+      nodejs
       silver-searcher
       tig
+      vscode-with-extensions
     ];
     systemPath = [ "$HOME/.nix-profile/bin" ];
     variables = {
@@ -22,51 +36,9 @@
   };
 
   programs = {
+    fish.enable = true;
     tmux = {
       enable = true;
-      enableSensible = true;
-      enableVim = true;
-    };
-    vim = {
-      enable = true;
-      enableSensible = true;
-      plugins = [
-        { names = [
-            "ale"
-            "colors-solarized"
-            "commentary"
-            "fzfWrapper"
-            "vim-gitgutter"
-            "vim-indent-object"
-            "vim-nix"
-            "youcompleteme"
-          ];
-        }
-      ];
-      vimConfig = ''
-        colorscheme solarized
-        set bg=dark
-
-        set clipboard=unnamed
-        set relativenumber
-      '';
-    };
-    zsh = {
-      enable = true;
-      enableBashCompletion = true;
-      enableFzfCompletion = true;
-      enableFzfGit = true;
-      enableFzfHistory = true;
-      promptInit = ''
-        autoload -U promptinit && promptinit
-        PROMPT='%B%(?..%? )%b⇒ '
-        RPROMPT='%F{green}%~%f'
-      '';
-      variables = {
-        cfg = "$HOME/.nixpkgs/darwin-config.nix";
-        darwin = "$HOME/.nix-defexpr/darwin";
-        pkgs = "$HOME/.nix-defexpr/nixpkgs";
-      };
     };
   };
 
@@ -83,12 +55,6 @@
       "darwin-config=$HOME/.nixpkgs/darwin-configuration.nix"
       "$HOME/.nix-defexpr/channels"
     ];
-    useSandbox = "relaxed";
   };
-
-  nipkgs.config = {
-    allowUnfree = true;
-  };
-  
 }
 
