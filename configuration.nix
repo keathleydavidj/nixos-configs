@@ -51,6 +51,8 @@
     ];
   };
 
+  nixpkgs.config.allowUnfree = true;
+
   environment = {
     shellAliases = {
       c = "clear";
@@ -60,9 +62,10 @@
     systemPackages = with pkgs; [
       fzf
       git
+      rxvt_unicode
       silver-searcher
+      steam
       tig
-      vscode-with-extensions
     ];
 
     variables = {
