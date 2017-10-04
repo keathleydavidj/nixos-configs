@@ -12,9 +12,11 @@
   };
 
   hardware = {
-    ## Steam support ##
     opengl.driSupport32Bit = true;
-    pulseaudio.support32Bit = true;
+    pulseaudio = {
+      enable = true;
+      support32Bit = true;
+    };
   };
 
   networking = {
@@ -102,11 +104,17 @@
       KERNEL=="uinput", MODE="0660", GROUP="users", OPTIONS+="static_node=uinput"
     '';
 
+    urxvtd = {
+      # To use urxvtd, run "urxvtc".
+      enable = true;
+    };
+
     xserver = {
       enable = true;
       desktopManager = {
         gnome3.enable = true;
         default = "gnome3";
+        xterm.enable = false;
       };
     };
   };

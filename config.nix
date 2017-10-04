@@ -1,8 +1,6 @@
 {
   allowUnfree = true;
   chromium.enableAdobeFlash = true;
-  firefox.enableAdobeFlash = true;
-  pulseaudio = true;
   packageOverrides = pkgs:
   let
     tor-browser = pkgs.tor-browser-bundle-bin.override {
@@ -22,7 +20,6 @@
           nix
           nix-repl
           nodejs
-          vim_configurable
           silver-searcher
           sudo
           openssh
@@ -34,12 +31,9 @@
       desktop-env = with pkgs; buildEnv {
         name = "desktop-env";
         paths = [
-          atom-beta
           chromium
           firefox
-          gnome3.gnome-tweak-tool
           google-play-music-desktop-player
-          tor
           tor-browser
           transmission_gtk
           rxvt_unicode
