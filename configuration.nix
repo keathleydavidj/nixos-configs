@@ -11,15 +11,15 @@
     efi.canTouchEfiVariables = true;
   };
 
+  hardware = {
+    ## Steam support ##
+    opengl.driSupport32Bit = true;
+    pulseaudio.support32Bit = true;
+  };
+
   networking = {
     hostName = "nixos-intel";
     networkmanager.enable = true;
-  };
-
-  i18n = {
-    consoleFont = "Lat2-Terminus16";
-    consoleKeyMap = "us";
-    defaultLocale = "en_US.UTF-8";
   };
 
   time.timeZone = "America/Chicago";
@@ -31,6 +31,7 @@
       source-sans-pro
       source-serif-pro
     ];
+
     fontconfig = {
       penultimate.enable = false;
       defaultFonts = {
@@ -49,69 +50,85 @@
   };
 
   environment = {
+    shellAliases = {
+      c = "clear";
+      ts = "tig status";
+    };
+
     systemPackages = with pkgs; [
-      iptables
-      lm_sensors
-      manpages
+      fzf
+      git
+      silver-searcher
+      tig
+      vscode-with-extensions
     ];
+
+    variables = {
+      # FZF_DEFAULT_COMMAND = "ag -l -f -g ''";
+    };
   };
 
   services = {
-    xserver = {
-      enable = true;
-      layout = "us";
-      desktopManager = {
-        gnome3.enable = true;
-        default = "gnome3";
-      };
-    };
     gnome3 = {
       tracker.enable = false;
       gnome-keyring.enable = true;
     };
+
+    nixosManual.showManual = true;
+
+    # TODO: migrate to 17.09
+    # postgresql = {
+    #   enable = true;
+    #   package = pkgs.postgresql94;
+    #   authentication = lib.mkForce ''
+    #     # Generated file; do not edit!
+    #     # TYPE  DATABASE        USER            ADDRESS                 METHOD
+    #     local   all             all                                     trust
+    #     host    all             all             127.0.0.1/32            trust
+    #     host    all             all             ::1/128                 trust
+    #   '';
+    # };
+
     redshift = {
       enable = true;
       # Austin
       latitude = "30.274591";
       longitude = "-97.740375";
     };
-    postgresql = {
+
+    ## Steam controller support ##
+    udev.extraRules = ''
+      SUBSYSTEM=="usb", ATTRS{idVendor}=="28de", MODE="0666"
+      KERNEL=="uinput", MODE="0660", GROUP="users", OPTIONS+="static_node=uinput"
+    '';
+
+    xserver = {
       enable = true;
-      package = pkgs.postgresql94;
-      authentication = lib.mkForce ''
-        # Generated file; do not edit!
-        # TYPE  DATABASE        USER            ADDRESS                 METHOD
-        local   all             all                                     trust
-        host    all             all             127.0.0.1/32            trust
-        host    all             all             ::1/128                 trust
-      '';
+      desktopManager = {
+        gnome3.enable = true;
+        default = "gnome3";
+      };
     };
-    nixosManual.showManual = true;
   };
 
   programs = {
     adb.enable = true;
-    zsh = {
+    fish = {
       enable = true;
-      enableCompletion = true;
-      syntaxHighlighting.enable = true;
     };
   };
 
   users = {
-    defaultUserShell = pkgs.zsh;
+    defaultUserShell = pkgs.fish;
     extraUsers.endertux = {
-      group = "users";
+      isNormalUser = true;
       extraGroups =  [
         "adbusers"
         "networkmanager"
         "wheel"
       ];
       home = "/home/endertux";
-      createHome = true;
-      useDefaultShell = true;
       password = "dummy"; # first boot only
-      uid = 1000;
     };
   };
 
