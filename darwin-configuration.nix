@@ -3,26 +3,19 @@
 {
   time.timeZone = "America/Chicago";
 
-  nixpkgs.config = {
-    allowUnfree = true;
-    allowUnfreeRedistributable = true;
-    packageOverrides = pkgs: rec {
-      chunkwm = pkgs.callPackage ./chunkwm/default.nix {
-        inherit (pkgs.darwin.apple_sdk.frameworks) Carbon Cocoa ApplicationServices;
-      };
-    };
-  };
   environment = {
     shellAliases = {
       c = "clear";
       ts = "tig status";
+      startnginx = "sudo nginx -c /usr/local/etc/nginx/nginx.conf";
     };
     systemPackages = with pkgs; [
-      chunkwm
+      # chunkwm
       fzf
       git
       htop
-      khd
+      # khd
+      nginx
       nix
       nodejs
       silver-searcher
@@ -47,14 +40,20 @@
   };
 
   nix = {
-    gc.automatic = true;
+    package = pkgs.nixUnstable;
     maxJobs = 8;
+    gc.automatic = true;
     nixPath = [ # Use local nixpkgs checkout instead of channels.
       "darwin=$HOME/.nix-defexpr/darwin"
       "nixpkgs=$HOME/.nix-defexpr/nixpkgs"
       "darwin-config=$HOME/.nixpkgs/darwin-configuration.nix"
       "$HOME/.nix-defexpr/channels"
     ];
+  };
+
+  nixpkgs.config = {
+    allowUnfree = true;
+    allowUnfreeRedistributable = true;
   };
 }
 
