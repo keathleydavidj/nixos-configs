@@ -11,7 +11,6 @@
     };
     systemPackages = with pkgs; [
       # chunkwm
-      fzf
       git
       htop
       # khd
@@ -54,6 +53,20 @@
   nixpkgs.config = {
     allowUnfree = true;
     allowUnfreeRedistributable = true;
+  };
+
+  system = {
+    defaults = {
+      dock.mru-spaces = true;
+      dock.minimize-to-application = true;
+
+      finder.AppleShowAllExtensions = true;
+      finder.QuitMenuItem = true;
+      finder.FXEnableExtensionChangeWarning = false;
+
+      trackpad.Clicking = true;
+      trackpad.TrackpadRightClick = true;
+    };
   };
 }
 
