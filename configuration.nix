@@ -13,18 +13,10 @@
 
   hardware.pulseaudio.enable = true;
 
-  networking.hostName = "ryzen-nixos";
-
-  i18n = {
-    consoleFont = "Source Code Pro"; 
-    # consoleFont = "Lat2-Terminus16";
-    consoleKeyMap = "us";
-    defaultLocale = "en_US.UTF-8";
-  };
-
   time.timeZone = "America/Chicago";
 
   environment = {
+    pathsToLink = [ "$HOME/.nix-profile/bin" ];
     systemPackages = with pkgs; [
       chromium
       dmenu
@@ -34,6 +26,7 @@
       silver-searcher
       transmission_gtk
       rxvt_unicode
+      vim_configurable
       vlc
     ];
   };
@@ -109,6 +102,10 @@
       "http://hydra.cryp.to"
       "http://hydra.nixos.org"
     ];
+    nixPath = [
+      "nixpkgs=$HOME/.nix-defexpr/nixpkgs"
+      "$HOME/.nix-defexpr/channels"
+    ];
   };
 
   nixpkgs.config.allowUnfree = true;
@@ -117,8 +114,7 @@
     activationScripts = {
       config-files = {
         text = ''
-          ln -sfn /home/endertux/nixos-configs/nixos/* /etc/nixos
-          ln -sfn /home/endertux/nixos-configs/.nixpkgs/* /home/endertux/.nixpkgs
+          ln -sfn /home/endertux/.nixpkgs /etc/nixos
         '';
         deps = [];
       };
