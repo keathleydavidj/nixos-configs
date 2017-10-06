@@ -6,6 +6,7 @@
     ];
 
   system.stateVersion = "17.09";
+
   system.activationScripts = {
     etc-setup = {
       text = ''
@@ -17,22 +18,9 @@
 
   networking.hostName = "nixos-intel";
 
-  boot.loader.efi.canTouchEfiVariables = true;
-  boot.loader.systemd-boot.enable = true;
-
   boot.initrd.availableKernelModules = [ "xhci_pci" "ehci_pci" "ahci" "usb_storage" "usbhid" "sd_mod" ];
   boot.kernelModules = [ "kvm-intel" ];
   boot.extraModulePackages = [ ];
-
-  time.timeZone = "America/Chicago";
-
-  environment.systemPackages = with pkgs; [
-    efibootmgr
-  ];
-
-  hardware = {
-    pulseaudio.enable = true;
-  };
 
   fileSystems."/" =
     { device = "/dev/disk/by-uuid/cd32e15c-4f68-4c31-8e22-2e45a49fad06";
@@ -44,6 +32,5 @@
     ];
 
   nix.maxJobs = 4;
-
   powerManagement.cpuFreqGovernor = "powersave";
 }

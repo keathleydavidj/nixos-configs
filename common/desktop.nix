@@ -5,7 +5,7 @@
     chromium
     google-play-music-desktop-player
     (
-      pkgs.tor-browser-bundle-bin.override {
+      tor-browser-bundle-bin.override {
         extraPrefs = ''
           lockPref("browser.tabs.remote.autostart", false);
           lockpref("browser.tabs.remote.autostart.2", false);
