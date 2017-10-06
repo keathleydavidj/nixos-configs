@@ -5,8 +5,8 @@
     ./system/rMBP.nix
 
     ./common/base.nix
+    ./common/emacs.nix
     ./common/nodejs.nix
-    ./common/neovim.nix
     ./common/tmux.nix
   ];
 }
