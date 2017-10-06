@@ -1,7 +1,7 @@
 { pkgs, ... }:
 
 {
-  environnment.systemPackages = with pkgs; [
+  environment.systemPackages = with pkgs; [
     nodejs
     nodePackages.yarn
   ];
