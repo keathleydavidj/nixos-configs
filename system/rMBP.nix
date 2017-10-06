@@ -24,8 +24,9 @@
     maxJobs = 8;
     gc.automatic = true;
     nixPath = [ # Use local nixpkgs checkout instead of channels.
-      "darwin=$HOME/.nix-defexpr/darwin"
       "nixpkgs=$HOME/.nix-defexpr/nixpkgs"
+      "nixpkgs-overlays=$HOME/nixos-configs/overlays"
+      "darwin=$HOME/.nix-defexpr/darwin"
       "darwin-config=$HOME/nixos-configs/rMBP.nix"
       "$HOME/.nix-defexpr/channels"
     ];

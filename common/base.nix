@@ -7,9 +7,9 @@
   # imports = import ../module/all.nix;
 
   # import custom package overrides TODO learn about overlays
-  nixpkgs.config.packageOverrides = pkgs: (import ../package {
-    pkgs = pkgs;
-  });
+  # nixpkgs.config.packageOverrides = pkgs: (import ../package {
+  #   pkgs = pkgs;
+  # });
 
   nixpkgs.config.allowUnfree = true;
 
@@ -18,6 +18,7 @@
     git
     silver-searcher
     tig
+    thefuck
   ];
 
   environment.shellAliases = {
