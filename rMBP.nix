@@ -5,10 +5,11 @@
     ./system/rMBP.nix
 
     ./common/base.nix
-    # ./common/emacs.nix
     ./common/nodejs.nix
     ./common/tmux.nix
+    ./common/vscode.nix
+    # ./common/emacs.nix
     # ./common/vim.nix
-    ./common/yi.nix
+    # ./common/yi.nix
   ];
 }
