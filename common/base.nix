@@ -1,7 +1,7 @@
 { pkgs, config, ... }:
 
 {
-  time.timeZone = "US/Central";
+  time.timeZone = "America/Chicago";
 
   # Import custom modules
   # imports = import ../module/all.nix;
