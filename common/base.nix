@@ -26,5 +26,10 @@
     ts = "tig status";
   };
 
-  programs.fish.enable = true;
+  programs.fish = {
+    enable = true;
+    shellInit = ''
+      set -x NIX_REMOTE daemon
+    '';
+  };
 }
