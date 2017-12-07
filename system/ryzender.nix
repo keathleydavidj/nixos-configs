@@ -10,7 +10,7 @@
   system.activationScripts = {
     etc-setup = {
       text = ''
-        ln -sfn /home/endertux/nixos-configs/intel-box.nix /etc/nixos/configuration.nix
+        ln -sfn $HOME/.nixpkgs/ryzender.nix /etc/nixos/configuration.nix
       '';
       deps = [];
     };
