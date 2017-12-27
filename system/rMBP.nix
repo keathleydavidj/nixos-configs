@@ -6,11 +6,9 @@
       startnginx = "sudo nginx -c /usr/local/etc/nginx/nginx.conf";
     };
     systemPackages = with pkgs; [
-      # chunkwm
       htop
-      # khd
       nginx
-      vscode-with-extensions
+      neovim
     ];
     systemPath = [ "$HOME/.nix-profile/bin" ];
   };
@@ -24,12 +22,14 @@
     maxJobs = 8;
     gc.automatic = true;
     nixPath = [ # Use local nixpkgs checkout instead of channels.
-      "nixpkgs=/nix/var/nix/profiles/per-user/root/channels/nixpkgs"
+      "nixpkgs=$HOME/.nix-defexpr/channels/nixpkgs"
       "nixpkgs-overlays=$HOME/.nixpkgs/overlays"
       "darwin=$HOME/.nix-defexpr/channels/darwin"
       "darwin-config=$HOME/.nixpkgs/rMBP.nix"
     ];
   };
+
+  nixpkgs.config.allowUnfree = true;
 
   system = {
     defaults = {
@@ -44,4 +44,8 @@
       trackpad.TrackpadRightClick = true;
     };
   };
+
+  ## GUI apps use the users bootstrap context and won't
+  ## load anything from the shell by default
+  launchd.user.envVariables.PATH = config.environment.systemPath;
 }

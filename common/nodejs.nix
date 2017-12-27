@@ -2,11 +2,11 @@
 
 {
   environment.systemPackages = with pkgs; [
-    nodejs
+    nodejs-8_x
     nodePackages.bower
     # nodePackages.ember-cli
     nodePackages.eslint
-    # nodePackages.eslint-plugin-mocha
+    nodePackages.typescript
     nodePackages.yarn
   ];
 }

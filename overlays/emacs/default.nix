@@ -1,6 +1,8 @@
 self: super:
 
 let
+  myEmacs = self.emacs25Macport;
+
   myEmacsConfig = self.writeText "default.el" ''
 ;; initialize package
 
@@ -32,6 +34,8 @@ let
 (use-package evil
   :config (evil-mode 1))
 
+(use-package gruvbox-theme)
+
 (use-package flycheck
   :defer 2
   :config (global-flycheck-mode))
@@ -62,10 +66,11 @@ let
   :config
   (projectile-global-mode))
   '';
+
 in
 
 {
-  myEmacs = super.emacsWithPackages (epkgs: (with epkgs.melpaStablePackages; [
+  myMacEmacs = (super.emacsPackagesNgGen myEmacs).emacsWithPackages (epkgs: (with epkgs.melpaStablePackages; [
     (self.runCommand "default.el" {} ''
 mkdir -p $out/share/emacs/site-lisp
 cp ${myEmacsConfig} $out/share/emacs/site-lisp/default.el
@@ -78,5 +83,6 @@ cp ${myEmacsConfig} $out/share/emacs/site-lisp/default.el
     magit
     projectile
     use-package
+    gruvbox-theme
   ]));
 }

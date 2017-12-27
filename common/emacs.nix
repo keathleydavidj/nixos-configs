@@ -3,10 +3,10 @@
 {
   services.emacs = {
     enable = true;
-    package = pkgs.myEmacs;
+    package = pkgs.myMacEmacs;
   };
 
   environment.systemPackages = [
-    pkgs.myEmacs
+    pkgs.myMacEmacs
   ];
 }
