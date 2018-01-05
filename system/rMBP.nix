@@ -33,6 +33,18 @@
 
   system = {
     defaults = {
+      NSGlobalDomain.AppleKeyboardUIMode = 3;
+      NSGlobalDomain.ApplePressAndHoldEnabled = false;
+      NSGlobalDomain.InitialKeyRepeat = 10;
+      NSGlobalDomain.KeyRepeat = 1;
+      NSGlobalDomain.NSAutomaticCapitalizationEnabled = false;
+      NSGlobalDomain.NSAutomaticDashSubstitutionEnabled = false;
+      NSGlobalDomain.NSAutomaticPeriodSubstitutionEnabled = false;
+      NSGlobalDomain.NSAutomaticQuoteSubstitutionEnabled = false;
+      NSGlobalDomain.NSAutomaticSpellingCorrectionEnabled = false;
+      NSGlobalDomain.NSNavPanelExpandedStateForSaveMode = true;
+      NSGlobalDomain.NSNavPanelExpandedStateForSaveMode2 = true;
+
       dock.mru-spaces = true;
       dock.minimize-to-application = true;
 
