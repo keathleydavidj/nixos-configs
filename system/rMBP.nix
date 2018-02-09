@@ -9,6 +9,7 @@
       htop
       nginx
       neovim
+      leiningen
     ];
     systemPath = [ "$HOME/.nix-profile/bin" ];
   };
@@ -35,8 +36,8 @@
     defaults = {
       NSGlobalDomain.AppleKeyboardUIMode = 3;
       NSGlobalDomain.ApplePressAndHoldEnabled = false;
-      NSGlobalDomain.InitialKeyRepeat = 10;
-      NSGlobalDomain.KeyRepeat = 1;
+      NSGlobalDomain.InitialKeyRepeat = 12;
+      NSGlobalDomain.KeyRepeat = 2;
       NSGlobalDomain.NSAutomaticCapitalizationEnabled = false;
       NSGlobalDomain.NSAutomaticDashSubstitutionEnabled = false;
       NSGlobalDomain.NSAutomaticPeriodSubstitutionEnabled = false;
