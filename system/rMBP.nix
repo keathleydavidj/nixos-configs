@@ -2,12 +2,8 @@
 
 {  
   environment = {
-    shellAliases = {
-      startnginx = "sudo nginx -c /usr/local/etc/nginx/nginx.conf";
-    };
     systemPackages = with pkgs; [
       htop
-      nginx
       neovim
       leiningen
     ];
@@ -25,19 +21,27 @@
     nixPath = [ # Use local nixpkgs checkout instead of channels.
       "nixpkgs=$HOME/.nix-defexpr/channels/nixpkgs"
       "nixpkgs-overlays=$HOME/.nixpkgs/overlays"
-      "darwin=$HOME/.nix-defexpr/channels/darwin"
+      "darwin=$HOME/.nix-defexpr/darwin"
       "darwin-config=$HOME/.nixpkgs/rMBP.nix"
     ];
   };
 
   nixpkgs.config.allowUnfree = true;
 
+  users.users.davidkeathley = {
+    password = "dummy"; # first boot only!
+    uid = 1000;
+    isHidden = false;
+    home = "/Users/davidkeathley";
+    shell = pkgs.fish;
+  };
+
   system = {
     defaults = {
       NSGlobalDomain.AppleKeyboardUIMode = 3;
       NSGlobalDomain.ApplePressAndHoldEnabled = false;
       NSGlobalDomain.InitialKeyRepeat = 12;
-      NSGlobalDomain.KeyRepeat = 2;
+      NSGlobalDomain.KeyRepeat = 4;
       NSGlobalDomain.NSAutomaticCapitalizationEnabled = false;
       NSGlobalDomain.NSAutomaticDashSubstitutionEnabled = false;
       NSGlobalDomain.NSAutomaticPeriodSubstitutionEnabled = false;

@@ -3,14 +3,6 @@
 {
   time.timeZone = "America/Chicago";
 
-  # Import custom modules
-  # imports = import ../module/all.nix;
-
-  # import custom package overrides TODO learn about overlays
-  # nixpkgs.config.packageOverrides = pkgs: (import ../package {
-  #   pkgs = pkgs;
-  # });
-
   nixpkgs.config.allowUnfree = true;
 
   # add some basic staples
@@ -18,7 +10,6 @@
     git
     silver-searcher
     tig
-    thefuck
   ];
 
   environment.shellAliases = {
