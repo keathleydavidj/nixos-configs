@@ -7,7 +7,11 @@
       neovim
       leiningen
     ];
-    systemPath = [ "$HOME/.nix-profile/bin" ];
+    systemPath = [ 
+      "$HOME/.nix-profile/bin"
+      "$HOME/.cask/bin"
+      "/usr/local/bin" # for yarn
+      ];
   };
 
   services = {
@@ -19,9 +23,9 @@
     maxJobs = 8;
     gc.automatic = true;
     nixPath = [ # Use local nixpkgs checkout instead of channels.
-      "nixpkgs=$HOME/.nix-defexpr/channels/nixpkgs"
+      "nixpkgs=$HOME/.nix-defexpr/channels_root/nixpkgs"
       "nixpkgs-overlays=$HOME/.nixpkgs/overlays"
-      "darwin=$HOME/.nix-defexpr/darwin"
+      "darwin=$HOME/.nix-defexpr/channels/darwin"
       "darwin-config=$HOME/.nixpkgs/rMBP.nix"
     ];
   };

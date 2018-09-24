@@ -2,7 +2,7 @@
 
 {
   environment.systemPackages = with pkgs; [
-    nodejs-8_x
+    nodejs-10_x
     nodePackages.bower
     # nodePackages.ember-cli
     nodePackages.eslint

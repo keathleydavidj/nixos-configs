@@ -3,10 +3,10 @@
 {
   services.emacs = {
     enable = true;
-    package = pkgs.myMacEmacs;
+    package = pkgs.emacs25Macport;
   };
 
   environment.systemPackages = [
-    pkgs.myMacEmacs
+    pkgs.emacs25Macport
   ];
 }

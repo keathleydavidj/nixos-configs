@@ -1,88 +1,30 @@
 self: super:
 
 let
-  myEmacs = self.emacs25Macport;
+  myEmacs = super.emacs25Macport;
+
+  frontmacsLoadScript = builtins.fetchurl https://raw.githubusercontent.com/thefrontside/frontmacs/master/scripts/init-frontmacs.el;
 
   myEmacsConfig = self.writeText "default.el" ''
-;; initialize package
-
-(require 'package)
-(package-initialize 'noactivate)
-(eval-when-compile
-  (require 'use-package))
-
-;; load some packages
-
-(use-package company
-  :bind ("<C-tab>" . company-complete)
-  :diminish company-mode
-  :commands (company-mode global-company-mode)
-  :defer 1
-  :config
-  (global-company-mode))
-
-(use-package counsel
-  :commands (counsel-descbinds)
-  :bind (([remap execute-extended-command] . counsel-M-x)
-        ("C-x C-f" . counsel-find-file)
-        ("C-c g" . counsel-git)
-        ("C-c j" . counsel-git-grep)
-        ("C-c k" . counsel-ag)
-        ("C-x l" . counsel-locate)
-        ("M-y" . counsel-yank-pop)))
-
-(use-package evil
-  :config (evil-mode 1))
-
-(use-package gruvbox-theme)
-
-(use-package flycheck
-  :defer 2
-  :config (global-flycheck-mode))
-
-(use-package ivy
-  :defer 1
-  :bind (("C-c C-r" . ivy-resume)
-        ("C-x C-b" . ivy-switch-buffer)
-        :map ivy-minibuffer-map
-        ("C-j" . ivy-call))
-  :diminish ivy-mode
-  :commands ivy-mode
-  :config
-  (ivy-mode 1))
-
-(use-package magit
-  :defer
-  :if (executable-find "git")
-  :bind (("C-x g" . magit-status)
-        ("C-x G" . magit-dispatch-popup))
-  :init
-  (setq magit-completing-read-function 'ivy-completing-read))
-
-(use-package projectile
-  :commands projectile-mode
-  :bind-keymap ("C-c p" . projectile-command-map)
-  :defer 5
-  :config
-  (projectile-global-mode))
+    (load ${frontmacsLoadScript})
   '';
 
 in
 
 {
-  myMacEmacs = (super.emacsPackagesNgGen myEmacs).emacsWithPackages (epkgs: (with epkgs.melpaStablePackages; [
+  emacs25Macport = (super.emacsPackagesNgGen myEmacs).emacsWithPackages (epkgs: (with epkgs.melpaStablePackages; [
     (self.runCommand "default.el" {} ''
-mkdir -p $out/share/emacs/site-lisp
-cp ${myEmacsConfig} $out/share/emacs/site-lisp/default.el
+      mkdir -p $out/share/emacs/site-lisp
+      cp ${myEmacsConfig} $out/share/emacs/site-lisp/default.el
     '')
-    company
-    counsel
-    evil
-    flycheck
-    ivy
-    magit
-    projectile
-    use-package
-    gruvbox-theme
+  #   company
+  #   counsel
+  #   evil
+  #   flycheck
+  #   ivy
+  #   magit
+  #   projectile
+  #   use-package
+  #   gruvbox-theme
   ]));
 }
